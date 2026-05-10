@@ -17,25 +17,40 @@ public class BankUserProfile {
         do {
             BankUserProfileView.showProfileFunctions();
             choice = takeProfileFunctionsChoice(user);
-        } while (!choice.equals(5));
+        } while (!choice.equals(6));
     }
 
     private static Integer takeProfileFunctionsChoice(User user) throws SQLException {
         String choice;
         do {
             choice = BankUserProfileView.takeChoice();
-        } while (!choice.matches("[1-5]"));
+        } while (!choice.matches("[1-6]"));
         runProfileFunction(user, Integer.valueOf(choice));
         return Integer.valueOf(choice);
     }
 
     private static void runProfileFunction(User user, Integer choice) throws SQLException {
         switch (choice) {
-            case 1 -> BankModifyProfile.run(user);
-            case 2 -> BankViewAccounts.run(user);
-            case 3 -> BankOpenAccount.run(user);
-            case 4 -> BankLogs.run(user);
-            case 5 -> logout(user);
+            case 1: 
+                BankModifyProfile.run(user);
+                break;
+            case 2: 
+                BankViewAccounts.run(user);
+                break;
+            case 3: 
+                BankOpenAccount.run(user);
+                break;
+            case 4: 
+                BankLogs.run(user);
+                break;
+            case 5: {
+                BankLoan loanController = new BankLoan(user);
+                loanController.run();
+                break;
+            }
+            case 6: 
+                logout(user);
+                break;
         }
     }
 

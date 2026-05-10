@@ -1,0 +1,146 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Patient {
+  patient_id           Int       @id @default(autoincrement())
+  full_name            String    @db.VarChar(255)
+  dob                  DateTime  @db.Date
+  sex                  Sex
+  registered_doctor_id Int?
+
+  doctor      Doctor?       @relation(fields: [registered_doctor_id], references: [doctor_id])
+  phones      PatientPhone[]
+  addresses   PatientAddress[]
+  notes       PatientClinicalNote[]
+  appointments Appointment[]
+
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+}
+
+// Enum fixes the magic value '3' for non-binary (Part E smell)
+enum Sex {
+  M
+  F
+  NB
+}
+
+// Removes repeating group ph1/ph2/ph3 — your 1NF fix from Part F
+model PatientPhone {
+  phone_id    Int       @id @default(autoincrement())
+  patient_id  Int
+  phone       String    @db.VarChar(20)
+  phone_type  PhoneType @default(mobile)
+
+  patient     Patient   @relation(fields: [patient_id], references: [patient_id])
+}
+
+enum PhoneType {
+  mobile
+  home
+  work
+  emergency
+}
+
+// Separate address table — your Part F 3NF fix
+model PatientAddress {
+  address_id   Int         @id @default(autoincrement())
+  patient_id   Int
+  addr_line1   String      @db.VarChar(255)
+  addr_line2   String?     @db.VarChar(255)
+  city         String      @db.VarChar(100)
+  address_type AddressType @default(home)
+
+  patient      Patient     @relation(fields: [patient_id], references: [patient_id])
+}
+
+enum AddressType {
+  home
+  work
+  other
+}
+
+// Splits the overloaded notes TEXT column — your Part F structural fix
+model PatientClinicalNote {
+  note_id     Int      @id @default(autoincrement())
+  patient_id  Int
+  note_type   NoteType
+  note_text   String   @db.Text
+  recorded_by Int?
+  recorded_at DateTime @default(now())
+
+  patient     Patient  @relation(fields: [patient_id], references: [patient_id])
+}
+
+enum NoteType {
+  allergy
+  clinical
+  administrative
+}
+
+// Reflects your R3 rename — all columns now snake_case
+// Reflects your R4 — doctor_id is now a proper PK
+model Doctor {
+  doctor_id      Int     @id
+  full_name      String  @db.VarChar(255)
+  speciality     String  @db.VarChar(255)
+  contact_no     String  @db.VarChar(20)
+  join_date      DateTime @db.Date
+  salary_monthly Decimal  @db.Decimal(10, 2)
+  is_active      String   @db.Char(1)
+
+  appointments   Appointment[]
+  patients       Patient[]
+}
+
+// R2 fix — reference table replacing magic CHAR(1) codes
+model ApptStatusRef {
+  status_code  String        @id @db.Char(1)
+  description  String        @db.VarChar(50)
+
+  appointments Appointment[]
+}
+
+// Core migration target for Part G
+// - room split into room_number + building_block (T2 fix)
+// - fee/discount as Decimal, not Float (fixes FLOAT smell)
+// - net_fee DROPPED (derived data — equals fee minus discount)
+// - patient_nm, patient_ph, doc_name DROPPED (duplicate data)
+// - created_at / updated_at added (R5 audit trail)
+model Appointment {
+  appt_id        Int      @id
+  patient_id     Int
+  doc_id         Int
+  appt_datetime  DateTime
+  status         String   @db.Char(1)
+  fee            Decimal  @db.Decimal(10, 2)
+  discount       Decimal  @db.Decimal(10, 2)
+  room_number    Int
+  building_block String   @db.VarChar(50)
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+
+  patient    Patient       @relation(fields: [patient_id], references: [patient_id])
+  doctor     Doctor        @relation(fields: [doc_id], references: [doctor_id])
+  apptStatus ApptStatusRef @relation(fields: [status], references: [status_code])
+}
+
+// Billing table reflects R1 (derived columns dropped) and R3 renames
+// tax_amt, grand_total, balance are removed — computed by v_billing_summary view
+model Billing {
+  bill_no        String   @id @db.VarChar(50)
+  pid            Int
+  patient_name   String   @db.VarChar(255)
+  services       String   @db.Text
+  service_cost   Decimal  @db.Decimal(10, 2)
+  tax_percent    Decimal  @db.Decimal(5, 2)
+  paid           Decimal  @db.Decimal(10, 2)
+  created_at     DateTime
+  created_by_user String  @db.VarChar(255)
+}

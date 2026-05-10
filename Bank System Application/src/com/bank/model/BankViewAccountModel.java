@@ -40,10 +40,10 @@ public class BankViewAccountModel {
 
     private static BankAccountType getBankAccountType(Integer typeID) {
         switch (typeID) {
-            case 1 -> {
+            case 1: {
                 return BankAccountType.BASIC;
             }
-            case 2 -> {
+            case 2: {
                 return BankAccountType.SAVING;
             }
         }
@@ -52,16 +52,16 @@ public class BankViewAccountModel {
 
     private static Currency getCurrency(Integer currencyID) {
         switch (currencyID) {
-            case 1 -> {
+            case 1: {
                 return Currency.DOLLAR;
             }
-            case 2 -> {
+            case 2: {
                 return Currency.EURO;
             }
-            case 3 -> {
+            case 3: {
                 return Currency.JapaneseYen;
             }
-            case 4 -> {
+            case 4: {
                 return Currency.GreatBritishPound;
             }
         }
@@ -70,13 +70,13 @@ public class BankViewAccountModel {
 
     private static BankAccountStatus getStatus(Integer statusID) {
         switch (statusID) {
-            case 1 -> {
+            case 1: {
                 return BankAccountStatus.ACTIVE;
             }
-            case 2 -> {
+            case 2: {
                 return BankAccountStatus.CLOSED;
             }
-            case 3 -> {
+            case 3: {
                 return BankAccountStatus.PENDING;
             }
         }

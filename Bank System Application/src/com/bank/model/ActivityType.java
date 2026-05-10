@@ -11,7 +11,8 @@ public enum ActivityType {
     CloseBankAccount("Closing bank account"),
     DEPOSIT("Making a deposit"),
     WITHDRAWAL("Making withdrawal"),
-    TRANSFER("Making transferring");
+    TRANSFER("Making transferring"),
+    LOAN_APPLICATION("Applying for a loan");
     public final String name;
 
     ActivityType(String name) {

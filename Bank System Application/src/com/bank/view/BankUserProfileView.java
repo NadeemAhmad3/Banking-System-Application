@@ -11,6 +11,7 @@ public class BankUserProfileView {
                 "View my bank accounts",
                 "Open new bank account",
                 "View my log",
+                "Loan Services",
                 "Logout"
         });
     }

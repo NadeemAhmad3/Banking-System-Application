@@ -109,17 +109,17 @@ public class BankUtil {
     public static void createMessage(String paragraph) {
         int width = 200;
         int part = (width / 2) - (paragraph.length() / 2);
-        String bothSides = "-".repeat(part);
-        String spaceArea = " ".repeat(3);
+        String bothSides = new String(new char[Math.max(0, part)]).replace('\0', '-');
+        String spaceArea = "   ";
         System.out.println(bothSides + spaceArea + paragraph + spaceArea + bothSides);
     }
 
     public static void createHeader(String paragraph) {
         int width = 200;
         int part = ((width / 2) - (paragraph.length() / 2));
-        String rightSide = "<".repeat(part);
-        String leftSide = ">".repeat(part);
-        String spaceArea = " ".repeat(3);
+        String rightSide = new String(new char[Math.max(0, part)]).replace('\0', '<');
+        String leftSide = new String(new char[Math.max(0, part)]).replace('\0', '>');
+        String spaceArea = "   ";
         System.out.println(rightSide + spaceArea + paragraph + spaceArea + leftSide);
     }
 

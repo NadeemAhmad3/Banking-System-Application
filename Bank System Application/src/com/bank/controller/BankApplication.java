@@ -31,9 +31,15 @@ public class BankApplication {
 
     private void runMainWindowOption(Integer option) throws SQLException {
         switch (option) {
-            case 1 -> BankLogin.run();
-            case 2 -> BankRegistration.run();
-            case 3 -> state = false;
+            case 1: 
+                BankLogin.run();
+                break;
+            case 2: 
+                BankRegistration.run();
+                break;
+            case 3: 
+                state = false;
+                break;
         }
     }
 }

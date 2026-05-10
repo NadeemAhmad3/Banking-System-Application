@@ -73,11 +73,21 @@ public class BankViewAccounts {
     private static void runUserBankAccountFunction(Integer choice, UserBankAccount userBankAccount)
             throws SQLException {
         switch (choice) {
-            case 1 -> BankDeposit.run(userBankAccount);
-            case 2 -> BankWithdrawal.run(userBankAccount);
-            case 3 -> BankTransfer.run(userBankAccount);
-            case 4 -> BankTransactions.run(userBankAccount);
-            case 5 -> BankCloseAccount.run(userBankAccount);
+            case 1: 
+                BankDeposit.run(userBankAccount);
+                break;
+            case 2: 
+                BankWithdrawal.run(userBankAccount);
+                break;
+            case 3: 
+                BankTransfer.run(userBankAccount);
+                break;
+            case 4: 
+                BankTransactions.run(userBankAccount);
+                break;
+            case 5: 
+                BankCloseAccount.run(userBankAccount);
+                break;
         }
     }
 

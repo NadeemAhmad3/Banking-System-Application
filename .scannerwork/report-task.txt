@@ -1,0 +1,6 @@
+projectKey=banking-system-application
+serverUrl=http://localhost:9000
+serverVersion=9.9.4.87374
+dashboardUrl=http://localhost:9000/dashboard?id=banking-system-application
+ceTaskId=AZ4MOTrjc_ZcdRHxGGeX
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AZ4MOTrjc_ZcdRHxGGeX

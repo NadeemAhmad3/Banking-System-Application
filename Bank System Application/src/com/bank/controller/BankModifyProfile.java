@@ -26,11 +26,21 @@ public class BankModifyProfile {
 
     private static void runChangeOption(User user, Integer option) throws SQLException {
         switch (option) {
-            case 1 -> changePassword(user);
-            case 2 -> changeName(user);
-            case 3 -> changePhoneNumber(user);
-            case 4 -> changeAddress(user);
-            case 5 -> changeEmail(user);
+            case 1: 
+                changePassword(user);
+                break;
+            case 2: 
+                changeName(user);
+                break;
+            case 3: 
+                changePhoneNumber(user);
+                break;
+            case 4: 
+                changeAddress(user);
+                break;
+            case 5: 
+                changeEmail(user);
+                break;
         }
     }
 
